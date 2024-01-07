@@ -104,11 +104,10 @@ local function renderBuffer(buffer)
 	local formattedFleNames = format_file_names(fileNames)
 
 	for i, fileName in ipairs(formattedFleNames) do
-		local displayIndex = i
-
-		if i > 9 then
-			displayIndex = config.getState("after_9_keys"):sub(i - 9, i - 9)
-		end
+		local displayIndex = config.getState("buffer_key_maps")[i]
+    if not displayIndex then
+      displayIndex = i
+    end
 
 		if fileNames[i] == vim.b.filename then
 			vim.api.nvim_buf_add_highlight(buf, -1, "ArrowDeleteMode", i + 3, 0, -1)
@@ -385,27 +384,8 @@ function M.openMenu()
 
 	hl.blend = 100
 
-	pcall(vim.api.nvim_set_hl, 0, "Cursor", hl)
-
-	vim.opt.guicursor:append("a:Cursor/lCursor")
-
-	vim.api.nvim_create_autocmd("BufLeave", {
-		buffer = 0,
-		desc = "Disable Cursor",
-		callback = function()
-			local old_hl = vim.api.nvim_get_hl_by_name("Cursor", true)
-
-			current_index = 0
-			old_hl.blend = 0
-			vim.api.nvim_set_hl(0, "Cursor", old_hl)
-			vim.opt.guicursor:remove("a:Cursor/lCursor")
-		end,
-	})
-
-	-- disable cursorline for this buffer
-	vim.wo.cursorline = false
-
 	vim.api.nvim_set_current_win(win)
+  vim.api.nvim_win_set_cursor(win, {2, 3})
 
 	render_highlights(menuBuf)
 end

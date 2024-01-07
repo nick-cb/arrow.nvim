@@ -8,7 +8,7 @@ local persist = require("arrow.persist")
 M.config = {}
 
 function M.setup(opts)
-	vim.cmd("highlight default link ArrowFileIndex CursorLineNr")
+	-- vim.cmd("highlight default link ArrowFileIndex CursorLineNr")
 	vim.cmd("highlight default link ArrowCurrentFile SpecialChar")
 	vim.cmd("highlight default link ArrowAction Character")
 	vim.cmd("highlight default link ArrowDeleteMode DiagnosticError")
@@ -35,6 +35,7 @@ function M.setup(opts)
 	config.setState("show_icons", opts.show_icons)
 	config.setState("after_9_keys", opts.after_9_keys or "zxcbnmZXVBNM,afghjklAFGHJKLwrtyuiopWRTYUIOP")
 	config.setState("hide_handbook", opts.hide_handbook or false)
+  config.setState("buffer_key_maps", opts.buffer_key_maps or { "a", "s", "d", "f", "g" })
 
 	config.setState("save_key", opts.save_key or function()
 		return vim.loop.cwd()
